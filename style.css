@@ -1,3 +1,11 @@
+:root {
+    --primary-color: #ff69b4;
+    --secondary-color: #ff1493;
+    --bg-color: #fff5f9;
+    --text-color: #333;
+    --border-color: #ffb3d9;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -5,10 +13,10 @@
 }
 
 body {
-    font-family: 'Arial', sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    min-height: 100vh;
-    padding-bottom: 50px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    line-height: 1.6;
 }
 
 .container {
@@ -17,406 +25,462 @@ body {
     padding: 20px;
 }
 
-/* HEADER */
+/* Header */
 .header {
-    background: rgba(255, 255, 255, 0.95);
-    padding: 30px 0;
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    padding: 40px 20px;
     text-align: center;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 15px;
     margin-bottom: 30px;
+    box-shadow: 0 5px 15px rgba(255, 105, 180, 0.3);
 }
 
-.logo {
+.header-content h1 {
     font-size: 2.5em;
-    color: #764ba2;
     margin-bottom: 10px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .tagline {
-    color: #667eea;
-    font-size: 1.1em;
+    font-size: 1.2em;
+    opacity: 0.95;
 }
 
-/* ADMIN PANEL */
+/* Admin Button */
+.admin-btn-container {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.btn-admin {
+    background-color: #4CAF50;
+    color: white;
+    padding: 12px 30px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: all 0.3s ease;
+}
+
+.btn-admin:hover {
+    background-color: #45a049;
+    transform: scale(1.05);
+}
+
+/* Admin Panel */
 .admin-panel {
-    background: #ff6b6b;
-    padding: 20px;
+    background: white;
+    padding: 30px;
     border-radius: 10px;
     margin-bottom: 30px;
-    color: white;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+    border: 2px solid var(--border-color);
 }
 
 .admin-panel h2 {
-    margin-bottom: 15px;
+    color: var(--secondary-color);
+    margin-bottom: 20px;
+    font-size: 1.5em;
 }
 
 .form-group {
     margin-bottom: 15px;
 }
 
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: var(--text-color);
+}
+
 .form-group input,
 .form-group textarea {
     width: 100%;
     padding: 12px;
-    border: none;
-    border-radius: 5px;
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
     font-size: 1em;
+    font-family: inherit;
+    transition: border-color 0.3s ease;
 }
 
-/* BUTTONS */
-.btn {
-    padding: 12px 24px;
+.form-group input:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 8px rgba(255, 20, 147, 0.2);
+}
+
+.btn-ekle {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 12px 30px;
     border: none;
-    border-radius: 5px;
+    border-radius: 8px;
     cursor: pointer;
     font-size: 1em;
     font-weight: bold;
+    width: 100%;
     transition: all 0.3s ease;
-    margin: 10px 5px 10px 0;
 }
 
-.btn-add {
-    background: #51cf66;
-    color: white;
-}
-
-.btn-add:hover {
-    background: #40c057;
+.btn-ekle:hover {
+    background-color: var(--secondary-color);
     transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(255, 105, 180, 0.3);
 }
 
-.btn-cart {
-    background: #4ecdc4;
-    color: white;
-    width: 100%;
-    margin: 20px 0;
-}
-
-.btn-cart:hover {
-    background: #45b7b0;
-}
-
-.btn-prepare {
-    background: #ffa94d;
-    color: white;
-    width: 100%;
-}
-
-.btn-prepare:hover {
-    background: #ff922b;
-}
-
-.btn-confirm {
-    background: #51cf66;
-    color: white;
-    width: 100%;
-}
-
-.btn-confirm:hover {
-    background: #40c057;
-}
-
-.btn-back {
-    background: #868e96;
-    color: white;
-    width: 100%;
-}
-
-.btn-back:hover {
-    background: #748089;
-}
-
-.btn-new {
-    background: #667eea;
-    color: white;
-    width: 100%;
-}
-
-.btn-new:hover {
-    background: #5568d3;
-}
-
-/* ÜRÜNLER */
-.products-section {
+/* Ürünler Container */
+.urunler-container {
     background: white;
     padding: 30px;
     border-radius: 10px;
     margin-bottom: 30px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
 }
 
-.products-section h2 {
-    color: #764ba2;
+.urunler-container h2 {
+    color: var(--secondary-color);
     margin-bottom: 20px;
-    text-align: center;
+    font-size: 1.5em;
 }
 
-.products-grid {
+.urunler-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     gap: 20px;
 }
 
-.product-card {
-    background: #f8f9fa;
-    border: 2px solid #e9ecef;
+.urun-card {
+    background: white;
+    border: 2px solid var(--border-color);
     border-radius: 10px;
     overflow: hidden;
     transition: all 0.3s ease;
-    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-.product-card:hover {
+.urun-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
-    border-color: #764ba2;
+    box-shadow: 0 5px 15px rgba(255, 105, 180, 0.3);
 }
 
-.product-image {
+.urun-foto {
     width: 100%;
     height: 200px;
     object-fit: cover;
-    background: #e9ecef;
+    background-color: #f0f0f0;
 }
 
-.product-info {
+.urun-info {
     padding: 15px;
 }
 
-.product-name {
-    font-size: 1.1em;
+.urun-adi {
+    font-size: 1.2em;
     font-weight: bold;
-    color: #764ba2;
+    color: var(--secondary-color);
     margin-bottom: 10px;
 }
 
-.product-price {
+.urun-fiyat {
     font-size: 1.3em;
-    color: #51cf66;
+    color: var(--primary-color);
     font-weight: bold;
-    margin-bottom: 10px;
-}
-
-.product-quantity {
-    display: flex;
-    gap: 5px;
-    align-items: center;
-}
-
-.product-quantity input {
-    width: 50px;
-    padding: 5px;
-    border: 1px solid #ddd;
-    border-radius: 3px;
-    text-align: center;
-}
-
-.product-quantity button {
-    padding: 5px 10px;
-    background: #667eea;
-    color: white;
-    border: none;
-    border-radius: 3px;
-    cursor: pointer;
-}
-
-.product-quantity button:hover {
-    background: #5568d3;
-}
-
-/* SEPETİ */
-.cart-section {
-    background: white;
-    padding: 30px;
-    border-radius: 10px;
-    margin: 30px 0;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.cart-section h2 {
-    color: #764ba2;
-    margin-bottom: 20px;
-}
-
-.cart-items {
-    margin-bottom: 20px;
-}
-
-.cart-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px;
-    background: #f8f9fa;
-    border-radius: 5px;
-    margin-bottom: 10px;
-    border-left: 4px solid #667eea;
-}
-
-.cart-item-info h4 {
-    color: #764ba2;
-    margin-bottom: 5px;
-}
-
-.cart-item-remove {
-    background: #ff6b6b;
-    color: white;
-    border: none;
-    padding: 8px 15px;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.cart-item-remove:hover {
-    background: #ff5252;
-}
-
-.cart-summary {
-    background: #f0f3ff;
-    padding: 20px;
-    border-radius: 5px;
-    text-align: right;
-    margin-bottom: 20px;
-    border: 2px solid #667eea;
-}
-
-.cart-summary h3 {
-    color: #764ba2;
-    font-size: 1.5em;
-}
-
-/* SİPARİŞ ONAYLAMA */
-.confirm-section {
-    background: white;
-    padding: 30px;
-    border-radius: 10px;
-    margin: 30px 0;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.confirm-section h2 {
-    color: #764ba2;
-    margin-bottom: 20px;
-}
-
-.order-review {
-    background: #f8f9fa;
-    padding: 20px;
-    border-radius: 5px;
-    margin-bottom: 20px;
-    border-left: 4px solid #51cf66;
-}
-
-.order-review-item {
-    display: flex;
-    justify-content: space-between;
-    padding: 10px 0;
-    border-bottom: 1px solid #e9ecef;
-}
-
-.order-review-item:last-child {
-    border-bottom: none;
-}
-
-.order-review-total {
-    font-size: 1.3em;
-    font-weight: bold;
-    color: #51cf66;
-    margin-top: 10px;
-    text-align: right;
-}
-
-/* SİPARİŞ BAŞARILI */
-.success-section {
-    background: white;
-    padding: 40px;
-    border-radius: 10px;
-    text-align: center;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.success-section h2 {
-    color: #51cf66;
-    font-size: 2em;
-    margin-bottom: 20px;
-}
-
-.success-section p {
-    color: #495057;
-    font-size: 1.1em;
     margin-bottom: 15px;
 }
 
-/* FOOTER */
-.footer {
-    background: rgba(0, 0, 0, 0.8);
-    color: white;
-    padding: 30px 0;
-    margin-top: 50px;
-    text-align: center;
-}
-
-.footer h3 {
-    margin-bottom: 15px;
-    color: #51cf66;
-}
-
-.footer p {
+.urun-miktar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
     margin-bottom: 10px;
 }
 
-.footer a {
-    color: #4ecdc4;
-    text-decoration: none;
+.urun-miktar input {
+    width: 60px;
+    padding: 8px;
+    border: 2px solid var(--border-color);
+    border-radius: 5px;
+    text-align: center;
 }
 
-.footer a:hover {
-    text-decoration: underline;
-}
-
-/* ADMIN TOGGLE */
-.admin-toggle {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    z-index: 1000;
-}
-
-.admin-toggle button {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    background: #764ba2;
+.btn-sepete-ekle {
+    width: 100%;
+    background-color: var(--primary-color);
     color: white;
+    padding: 10px;
     border: none;
-    font-size: 1.5em;
+    border-radius: 5px;
     cursor: pointer;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    font-weight: bold;
     transition: all 0.3s ease;
 }
 
-.admin-toggle button:hover {
-    background: #667eea;
-    transform: scale(1.1);
+.btn-sepete-ekle:hover {
+    background-color: var(--secondary-color);
 }
 
-/* GİZLİ CLASS */
+/* Sipariş Container */
+.siparis-container {
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    margin-bottom: 30px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+}
+
+.siparis-container h2 {
+    color: var(--secondary-color);
+    margin-bottom: 20px;
+    font-size: 1.5em;
+}
+
+.sepet-listesi {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    border: 2px solid var(--border-color);
+}
+
+.sepet-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.sepet-item:last-child {
+    border-bottom: none;
+}
+
+.empty-cart {
+    text-align: center;
+    color: #999;
+    font-style: italic;
+}
+
+.siparis-form {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    border: 2px solid var(--border-color);
+}
+
+.toplam-fiyat {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 15px;
+    border-radius: 8px;
+    text-align: right;
+    margin-bottom: 20px;
+    font-size: 1.2em;
+}
+
+.btn-hazirla {
+    width: 100%;
+    background-color: #2196F3;
+    color: white;
+    padding: 15px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.1em;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.btn-hazirla:hover {
+    background-color: #0b7dda;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(33, 150, 243, 0.3);
+}
+
+/* Modal */
+.modal {
+    display: flex;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    align-items: center;
+    justify-content: center;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.modal.hidden {
+    display: none;
+}
+
+.modal-content {
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+    max-width: 500px;
+    width: 90%;
+    animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateY(-50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.modal-content h2 {
+    color: var(--secondary-color);
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.onay-listesi {
+    background-color: #f9f9f9;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    border: 2px solid var(--border-color);
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.onay-item {
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.onay-item:last-child {
+    border-bottom: none;
+}
+
+.onay-toplam {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 15px;
+    border-radius: 8px;
+    text-align: right;
+    margin-bottom: 20px;
+}
+
+.modal-buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: space-between;
+}
+
+.btn-iptal,
+.btn-onayla {
+    flex: 1;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.btn-iptal {
+    background-color: #999;
+    color: white;
+}
+
+.btn-iptal:hover {
+    background-color: #777;
+}
+
+.btn-onayla {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.btn-onayla:hover {
+    background-color: #45a049;
+}
+
+/* Footer */
+.footer {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    text-align: center;
+    padding: 30px 20px;
+    border-radius: 15px;
+    margin-top: 40px;
+    box-shadow: 0 5px 15px rgba(255, 105, 180, 0.3);
+}
+
+.footer-content {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    align-items: center;
+}
+
+.footer-content p {
+    margin: 0;
+    font-size: 0.95em;
+}
+
+.whatsapp-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    color: white;
+    text-decoration: none;
+    background-color: rgba(255, 255, 255, 0.2);
+    padding: 12px 20px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    font-weight: bold;
+}
+
+.whatsapp-link:hover {
+    background-color: rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
+}
+
+/* Utilities */
 .hidden {
-    display: none !important;
+    display: none;
 }
 
-/* RESPONSIVE */
+/* Responsive */
 @media (max-width: 768px) {
-    .products-grid {
+    .header-content h1 {
+        font-size: 1.8em;
+    }
+
+    .urunler-grid {
         grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
     }
 
-    .logo {
-        font-size: 2em;
+    .modal-content {
+        width: 95%;
     }
 
-    .cart-item {
+    .footer-content {
         flex-direction: column;
-        align-items: flex-start;
     }
 }
