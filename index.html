@@ -3,107 +3,451 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NES PARFUM - Parfüm Alışveriş</title>
-    <link rel="stylesheet" href="style.css">
+    <title>NES PARFUM</title>
+    <style>
+        /* GENEL TASARIM VE RENKLER */
+        :root {
+            --bg-color: #fcfaf5;
+            --header-bg: #1a1410;
+            --gold: #d2a95c;
+            --text-dark: #333;
+            --card-bg: #ffffff;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: var(--bg-color); color: var(--text-dark); }
+
+        /* ÜST MENÜ (Header) */
+        header {
+            background-color: var(--header-bg);
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--gold);
+        }
+        header h1 {
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 24px;
+            letter-spacing: 1.5px;
+        }
+        .cart-btn {
+            background-color: var(--gold);
+            color: #000;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* ANA İÇERİK */
+        .container { padding: 20px; max-width: 800px; margin: 0 auto; }
+        
+        /* ARAMA VE FİLTRE */
+        .filters { display: flex; gap: 10px; margin-bottom: 20px; }
+        .filter-btn {
+            padding: 8px 15px;
+            border-radius: 20px;
+            border: 1px solid #ddd;
+            background: white;
+            cursor: pointer;
+        }
+        .filter-btn.active { background: var(--gold); color: white; border-color: var(--gold); }
+        .search-bar { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #ddd; margin-bottom: 20px; }
+
+        /* ÜRÜN KARTLARI */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 15px;
+        }
+        .product-card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            text-align: left;
+        }
+        .product-img { width: 100%; height: 180px; object-fit: contain; margin-bottom: 10px; }
+        .product-title { font-family: 'Times New Roman', serif; font-size: 16px; font-weight: bold; }
+        .product-category { font-size: 12px; color: #888; margin-bottom: 5px; }
+        .product-price { color: var(--gold); font-weight: bold; font-size: 18px; margin-bottom: 10px; }
+        
+        .quantity-control { display: flex; align-items: center; gap: 10px; }
+        .qty-btn {
+            background-color: var(--gold);
+            color: white;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 8px;
+            font-size: 18px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        /* SEPET VE ÖDEME MODALI */
+        .modal {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5); justify-content: center; align-items: center; z-index: 1000;
+        }
+        .modal-content {
+            background: white; padding: 25px; border-radius: 15px; width: 90%; max-width: 400px;
+            max-height: 90vh; overflow-y: auto;
+        }
+        .modal-header { display: flex; justify-content: space-between; margin-bottom: 20px; }
+        .close-btn { cursor: pointer; font-size: 24px; font-weight: bold; color: #888; }
+        .cart-item { display: flex; justify-content: space-between; margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid #eee; }
+        .total-price { font-size: 20px; font-weight: bold; text-align: right; margin: 20px 0; color: var(--gold); }
+        
+        .checkout-form input {
+            width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 8px;
+        }
+        .btn-primary {
+            width: 100%; background: var(--header-bg); color: var(--gold); padding: 15px;
+            border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer;
+        }
+        .btn-success { background: #25D366; color: white; margin-top: 10px; display: flex; align-items: center; justify-content: center; gap: 10px;}
+
+        /* ADMIN PANELİ */
+        #admin-panel { display: none; }
+        .admin-section { background: white; padding: 20px; border-radius: 10px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .admin-section h2 { margin-bottom: 15px; color: var(--header-bg); }
+        .admin-form input { width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 5px;}
+
+        /* ADMIN ÜRÜN LİSTESİ */
+        .admin-product-item { display: flex; justify-content: space-between; align-items: center; background: #f9f9f9; padding: 10px; margin-bottom: 10px; border-radius: 8px; border: 1px solid #eee; }
+        .btn-delete { background: #ff4d4d; color: white; border: none; padding: 8px 12px; border-radius: 5px; cursor: pointer; font-weight: bold; }
+
+        /* YÖNETİCİ GİRİŞİ DÜĞMESİ */
+        .admin-toggle { text-align: center; margin-top: 50px; padding: 20px; }
+        .admin-toggle button { background: none; border: none; color: #888; text-decoration: underline; cursor: pointer; }
+
+    </style>
 </head>
 <body>
-    <div class="container">
-        <!-- Header -->
-        <header class="header">
-            <div class="header-content">
-                <h1 class="logo">🌸 NES PARFUM 🌸</h1>
-                <p class="tagline">En Güzel Kokuların Evi</p>
-            </div>
+
+    <!-- MÜŞTERİ GÖRÜNÜMÜ -->
+    <div id="store-view">
+        <header>
+            <h1>NES PARFUM</h1>
+            <button class="cart-btn" onclick="openCart()">🛒 Sepet <span id="cart-count">0</span></button>
         </header>
 
-        <!-- Main Content -->
-        <main class="main-content">
-            <!-- Admin Panel Butonu -->
-            <div class="admin-btn-container">
-                <button class="btn-admin" onclick="toggleAdminPanel()">📋 Admin Paneli</button>
+        <div class="container">
+            <div class="filters">
+                <button class="filter-btn active">Tümü</button>
+                <button class="filter-btn">Erkek</button>
+                <button class="filter-btn">Kadın</button>
             </div>
+            
+            <input type="text" class="search-bar" placeholder="Parfüm ara...">
 
-            <!-- Admin Panel -->
-            <div id="adminPanel" class="admin-panel hidden">
-                <div class="admin-content">
-                    <h2>Admin Paneli - Parfüm Ekle</h2>
-                    <div class="form-group">
-                        <label>Parfüm Adı:</label>
-                        <input type="text" id="parfumAdi" placeholder="Örn: Rose Garden">
-                    </div>
-                    <div class="form-group">
-                        <label>Fiyat (₺):</label>
-                        <input type="number" id="parfumFiyat" placeholder="Örn: 150" step="0.01">
-                    </div>
-                    <div class="form-group">
-                        <label>Fotoğraf URL:</label>
-                        <input type="text" id="parfumFoto" placeholder="https://örnek.com/resim.jpg">
-                    </div>
-                    <button class="btn-ekle" onclick="parfumEkle()">✅ Parfümü Ekle</button>
-                </div>
+            <div class="products-grid" id="products-container">
+                <!-- Ürünler buraya eklenecek -->
             </div>
-
-            <!-- Ürünler Listesi -->
-            <div class="urunler-container">
-                <h2>🛍️ Parfüm Koleksiyonu</h2>
-                <div id="urunlerListesi" class="urunler-grid">
-                    <!-- Ürünler buraya gelecek -->
-                </div>
-            </div>
-
-            <!-- Sepet ve Siparişi Hazırla -->
-            <div class="siparis-container">
-                <h2>📦 Siparişiniz</h2>
-                <div id="sepetListesi" class="sepet-listesi">
-                    <p class="empty-cart">Henüz ürün seçilmedi</p>
-                </div>
-                <div class="siparis-form">
-                    <div class="form-group">
-                        <label>Ad Soyadınız:</label>
-                        <input type="text" id="musteriAdi" placeholder="Adınızı girin">
-                    </div>
-                    <div class="form-group">
-                        <label>Telefon:</label>
-                        <input type="tel" id="musteriTelefon" placeholder="0501 XXX XX XX">
-                    </div>
-                    <div class="form-group">
-                        <label>Adres:</label>
-                        <textarea id="musteriAdresi" placeholder="Teslimat adresinizi girin"></textarea>
-                    </div>
-                    <div class="toplam-fiyat">
-                        <h3>Toplam: <span id="toplamFiyat">0</span> ₺</h3>
-                    </div>
-                    <button class="btn-hazirla" onclick="siparisHazirla()">⚙️ Siparişi Hazırla</button>
-                </div>
-            </div>
-
-            <!-- Siparişi Onayla Modal -->
-            <div id="onayModal" class="modal hidden">
-                <div class="modal-content">
-                    <h2>📋 Sipariş Özeti</h2>
-                    <div id="onayListesi" class="onay-listesi"></div>
-                    <div class="onay-toplam">
-                        <h3>Toplam Tutar: <span id="onayToplam">0</span> ₺</h3>
-                    </div>
-                    <div class="modal-buttons">
-                        <button class="btn-iptal" onclick="closeModal()">❌ İptal</button>
-                        <button class="btn-onayla" onclick="siparisOnayla()">✅ Onayla ve Siparişi Gönder</button>
-                    </div>
-                </div>
-            </div>
-        </main>
-
-        <!-- Footer -->
-        <footer class="footer">
-            <div class="footer-content">
-                <p>&copy; 2026 NES PARFUM - Tüm Hakları Saklıdır</p>
-                <a href="https://wa.me/905012074171?text=Merhaba%20NES%20PARFUM!%20Sipariş%20vermek%20istiyorum." target="_blank" class="whatsapp-link">
-                    💬 WhatsApp ile İletişim: +90 501 207 41 71
-                </a>
-            </div>
-        </footer>
+        </div>
     </div>
 
-    <script src="script.js"></script>
+    <!-- SEPET VE SİPARİŞ MODALI -->
+    <div class="modal" id="cart-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Sepetiniz</h2>
+                <span class="close-btn" onclick="closeCart()">&times;</span>
+            </div>
+            <div id="cart-items"></div>
+            <div class="total-price" id="cart-total">Toplam: 0₺</div>
+            
+            <button class="btn-primary" id="prepare-order-btn" onclick="showCheckoutForm()">Siparişi Hazırla</button>
+
+            <!-- Müşteri Bilgileri Formu -->
+            <div class="checkout-form" id="checkout-form" style="display: none; margin-top: 20px;">
+                <h3>Teslimat Bilgileri</h3>
+                <br>
+                <input type="text" id="cust-name" placeholder="Adınız" required>
+                <input type="text" id="cust-surname" placeholder="Soyadınız" required>
+                <input type="tel" id="cust-phone" placeholder="Kendi Numaranız" required>
+                <button class="btn-primary btn-success" onclick="confirmOrder()">
+                    💬 WhatsApp Üzerinden Sipariş Ver
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ADMIN GİRİŞ MODALI -->
+    <div class="modal" id="admin-login-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Admin Girişi</h2>
+                <span class="close-btn" onclick="document.getElementById('admin-login-modal').style.display='none'">&times;</span>
+            </div>
+            <input type="password" id="admin-password" placeholder="Şifrenizi Girin">
+            <button class="btn-primary" onclick="checkAdminPassword()">Giriş Yap</button>
+        </div>
+    </div>
+
+    <!-- ADMIN PANELİ GÖRÜNÜMÜ -->
+    <div id="admin-view" style="display: none;">
+        <header>
+            <h1>NES PARFUM - YÖNETİM</h1>
+            <button class="cart-btn" onclick="showStore()">Mağazaya Dön</button>
+        </header>
+
+        <div class="container">
+            <div class="admin-section">
+                <h2>Yeni Ürün Ekle</h2>
+                <div class="admin-form">
+                    <input type="text" id="new-prod-name" placeholder="Parfüm Adı (Örn: ARMANI Code)">
+                    <input type="text" id="new-prod-cat" placeholder="Kategori (Örn: Erkek)">
+                    <input type="number" id="new-prod-price" placeholder="Fiyat (₺)">
+                    <input type="text" id="new-prod-img" placeholder="Fotoğraf Linki (URL)">
+                    <button class="btn-primary" onclick="addProduct()">Ürünü Ekle</button>
+                </div>
+            </div>
+
+            <div class="admin-section">
+                <h2>Mevcut Ürünleri Yönet</h2>
+                <div id="admin-products-list">
+                    <!-- Admin ürün listesi buraya gelecek -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Geçiş Butonu -->
+    <div class="admin-toggle" id="admin-toggle-btn">
+        <button onclick="document.getElementById('admin-login-modal').style.display='flex'">Yönetici Paneline Geç</button>
+    </div>
+
+    <script>
+        // --- VERİTABANI SİMÜLASYONU ---
+        let products = JSON.parse(localStorage.getItem('nes_products')) || [
+            { id: 1, name: 'ARMANI code', category: 'Erkek', price: 50, img: 'https://via.placeholder.com/150/000000/FFFFFF/?text=ARMANI' }
+        ];
+        let cart = {}; 
+
+        // --- MÜŞTERİ MAĞAZA İŞLEVLERİ ---
+        function renderProducts() {
+            const container = document.getElementById('products-container');
+            container.innerHTML = '';
+            products.forEach(p => {
+                const qty = cart[p.id] || 0;
+                container.innerHTML += `
+                    <div class="product-card">
+                        <img src="${p.img}" alt="${p.name}" class="product-img">
+                        <div class="product-title">${p.name}</div>
+                        <div class="product-category">${p.category}</div>
+                        <div class="product-price">${p.price}₺</div>
+                        <div class="quantity-control">
+                            <button class="qty-btn" onclick="updateCart(${p.id}, -1)">-</button>
+                            <span id="qty-${p.id}">${qty}</span>
+                            <button class="qty-btn" onclick="updateCart(${p.id}, 1)">+</button>
+                        </div>
+                    </div>
+                `;
+            });
+            updateCartCount();
+        }
+
+        function updateCart(productId, change) {
+            if (!cart[productId]) cart[productId] = 0;
+            cart[productId] += change;
+            if (cart[productId] <= 0) delete cart[productId];
+            
+            const qtyElement = document.getElementById(`qty-${productId}`);
+            if (qtyElement) qtyElement.innerText = cart[productId] || 0;
+            
+            updateCartCount();
+        }
+
+        function updateCartCount() {
+            let totalItems = 0;
+            for (let id in cart) totalItems += cart[id];
+            document.getElementById('cart-count').innerText = totalItems;
+        }
+
+        // --- SEPET İŞLEVLERİ ---
+        function openCart() {
+            document.getElementById('cart-modal').style.display = 'flex';
+            document.getElementById('checkout-form').style.display = 'none';
+            document.getElementById('prepare-order-btn').style.display = 'block';
+            
+            const cartItemsContainer = document.getElementById('cart-items');
+            cartItemsContainer.innerHTML = '';
+            let total = 0;
+
+            if (Object.keys(cart).length === 0) {
+                cartItemsContainer.innerHTML = '<p>Sepetiniz boş.</p>';
+                document.getElementById('cart-total').innerText = 'Toplam: 0₺';
+                document.getElementById('prepare-order-btn').style.display = 'none';
+                return;
+            }
+
+            for (let id in cart) {
+                const product = products.find(p => p.id == id);
+                if (product) {
+                    const itemTotal = product.price * cart[id];
+                    total += itemTotal;
+                    cartItemsContainer.innerHTML += `
+                        <div class="cart-item">
+                            <div><strong>${product.name}</strong> (${cart[id]} adet)</div>
+                            <div>${itemTotal}₺</div>
+                        </div>
+                    `;
+                }
+            }
+            document.getElementById('cart-total').innerText = `Toplam: ${total}₺`;
+        }
+
+        function closeCart() { document.getElementById('cart-modal').style.display = 'none'; }
+
+        function showCheckoutForm() {
+            document.getElementById('prepare-order-btn').style.display = 'none';
+            document.getElementById('checkout-form').style.display = 'block';
+        }
+
+        // --- WHATSAPP SİPARİŞ OLUŞTURMA ---
+        function confirmOrder() {
+            const name = document.getElementById('cust-name').value;
+            const surname = document.getElementById('cust-surname').value;
+            const phone = document.getElementById('cust-phone').value;
+
+            if(!name || !surname || !phone) {
+                alert("Lütfen ad, soyad ve numaranızı eksiksiz girin.");
+                return;
+            }
+
+            // *** BURAYA KENDİ WHATSAPP NUMARANI YAZ ***
+            const adminTelefon = "905000000000"; 
+
+            let orderDetails = [];
+            let total = 0;
+            for (let id in cart) {
+                const p = products.find(prod => prod.id == id);
+                if(p) {
+                    orderDetails.push(`- ${p.name} (${cart[id]} adet)`);
+                    total += p.price * cart[id];
+                }
+            }
+
+            let mesaj = `Merhaba NES PARFUM, yeni bir sipariş vermek istiyorum! 🛍️\n\n`;
+            mesaj += `👤 *Müşteri:* ${name} ${surname}\n`;
+            mesaj += `📱 *İletişim:* ${phone}\n\n`;
+            mesaj += `📦 *Sipariş Detayları:*\n${orderDetails.join('\n')}\n\n`;
+            mesaj += `💰 *Toplam Tutar:* ${total}₺`;
+
+            const whatsappLink = `https://wa.me/${adminTelefon}?text=${encodeURIComponent(mesaj)}`;
+            window.open(whatsappLink, '_blank'); 
+            
+            cart = {};
+            document.getElementById('cust-name').value = '';
+            document.getElementById('cust-surname').value = '';
+            document.getElementById('cust-phone').value = '';
+            closeCart();
+            renderProducts();
+        }
+
+        // --- ADMİN PANELİ İŞLEVLERİ ---
+        function checkAdminPassword() {
+            const pass = document.getElementById('admin-password').value;
+            if (pass === '8511068nes') {
+                document.getElementById('admin-login-modal').style.display = 'none';
+                document.getElementById('store-view').style.display = 'none';
+                document.getElementById('admin-toggle-btn').style.display = 'none';
+                document.getElementById('admin-view').style.display = 'block';
+                document.getElementById('admin-password').value = '';
+                renderAdminProducts(); // Giriş yapınca ürünleri listele
+            } else {
+                alert('Hatalı Şifre!');
+            }
+        }
+
+        function showStore() {
+            document.getElementById('admin-view').style.display = 'none';
+            document.getElementById('store-view').style.display = 'block';
+            document.getElementById('admin-toggle-btn').style.display = 'block';
+            renderProducts();
+        }
+
+        // ADMİN ÜRÜNLERİNİ LİSTELEME
+        function renderAdminProducts() {
+            const container = document.getElementById('admin-products-list');
+            container.innerHTML = '';
+            
+            if(products.length === 0) {
+                container.innerHTML = '<p>Kayıtlı ürün bulunamadı.</p>';
+                return;
+            }
+
+            products.forEach(p => {
+                container.innerHTML += `
+                    <div class="admin-product-item">
+                        <div>
+                            <strong>${p.name}</strong><br>
+                            <span style="font-size: 13px; color: #666;">${p.category} - ${p.price}₺</span>
+                        </div>
+                        <button class="btn-delete" onclick="deleteProduct(${p.id})">Sil</button>
+                    </div>
+                `;
+            });
+        }
+
+        // ÜRÜN SİLME
+        function deleteProduct(id) {
+            const isConfirmed = confirm("Bu ürünü silmek istediğinize emin misiniz?");
+            if (isConfirmed) {
+                products = products.filter(p => p.id !== id);
+                localStorage.setItem('nes_products', JSON.stringify(products));
+                
+                // Ürün silindiyse sepette kalan hayaletleri de temizle
+                if (cart[id]) {
+                    delete cart[id];
+                    updateCartCount();
+                }
+
+                alert("Ürün başarıyla silindi!");
+                renderAdminProducts(); // Listeyi güncelle
+                renderProducts(); // Mağazayı da güncelle
+            }
+        }
+
+        function addProduct() {
+            const name = document.getElementById('new-prod-name').value;
+            const cat = document.getElementById('new-prod-cat').value;
+            const price = document.getElementById('new-prod-price').value;
+            let img = document.getElementById('new-prod-img').value;
+
+            if(!name || !price) { alert("Lütfen isim ve fiyat girin."); return; }
+            if(!img) img = 'https://via.placeholder.com/150?text=Görsel+Yok'; 
+
+            const newProduct = {
+                id: Date.now(),
+                name: name,
+                category: cat || 'Kategori Yok',
+                price: parseFloat(price),
+                img: img
+            };
+
+            products.push(newProduct);
+            localStorage.setItem('nes_products', JSON.stringify(products));
+            
+            alert("Ürün başarıyla eklendi!");
+            document.getElementById('new-prod-name').value = '';
+            document.getElementById('new-prod-cat').value = '';
+            document.getElementById('new-prod-price').value = '';
+            document.getElementById('new-prod-img').value = '';
+            
+            renderAdminProducts(); // Yeni ürün eklenince admin listesini de güncelle
+            renderProducts(); 
+        }
+
+        window.onload = () => { renderProducts(); };
+
+    </script>
 </body>
 </html>
